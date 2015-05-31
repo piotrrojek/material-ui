@@ -30,6 +30,12 @@ var IconButton = React.createClass({
     };
   },
 
+  getDefaultProps: function () {
+    return {
+      iconStyle: {}
+    };
+  },
+
   componentDidMount: function() {
     if (this.props.tooltip) {
       this._positionTooltip();
@@ -59,8 +65,6 @@ var IconButton = React.createClass({
   getStyles: function() {
     var styles = {
       root: {
-        height: 48,
-        width: 48,
         position: 'relative',
         boxSizing: 'border-box',
         transition: Transitions.easeOut(),
@@ -100,13 +104,13 @@ var IconButton = React.createClass({
       tooltip,
       touch,
       ...other } = this.props;
-    var tooltip;
+    var tooltipElement;
     var fonticon;
 
     var styles = this.getStyles();
 
     if (this.props.tooltip) {
-      tooltip = (
+      tooltipElement = (
         <Tooltip
           ref="tooltip"
           label={tooltip}
@@ -151,7 +155,7 @@ var IconButton = React.createClass({
         onMouseOver={this._handleMouseOver}
         onKeyboardFocus={this._handleKeyboardFocus}>
 
-        {tooltip}
+        {tooltipElement}
         {fonticon}
         {this.props.children}
 
@@ -174,7 +178,7 @@ var IconButton = React.createClass({
   },
 
   _hideTooltip: function() {
-    this.setState({ tooltipShown: false });
+    if (this.props.tooltip) this.setState({ tooltipShown: false });
   },
 
   _handleBlur: function(e) {
